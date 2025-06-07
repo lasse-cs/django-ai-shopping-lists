@@ -18,3 +18,16 @@ class ShoppingItemForm(forms.ModelForm):
             "name",
             "notes",
         ]
+
+
+class SendShoppingListForm(forms.Form):
+    email = forms.EmailField(
+        label="Email",
+        max_length=254,
+        help_text="Enter the email address to send the shopping list to.",
+    )
+    subject = forms.CharField(
+        label="Subject",
+        max_length=100,
+        help_text="Enter the subject of the email.",
+    )

@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <h1>Shopping List</h1>
-    <p>Start a new shopping list</p>
+
+    {% if shopping_lists %}
+        <h2>My Shopping Lists</h2>
+        <ul>
+            {% for shopping_list in shopping_lists %}
+                <li>
+                    <a href="{{ shopping_list.get_absolute_url }}">
+                        {{ shopping_list.created_at|date:"Y-m-d" }} -
+                        {{ shopping_list.name }}
+                    </a>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <h2>Start a new shopping list</h2>
     <form method="post">
-        {{ shopping_form.as_p }}
+        {{ shopping_form|crispy }}
         {% csrf_token %}
-        <button type="submit">Create Shopping List</button>
+        <button type="submit" class="btn btn-primary">Create Shopping List</button>
     </form>
 {% endblock content %}

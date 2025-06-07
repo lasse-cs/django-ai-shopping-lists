@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
     {{ block.super }} | {{ shopping_list.name }}
 {% endblock title %}
@@ -7,25 +8,50 @@
     <h1>{{ shopping_list.name }}</h1>
     <p>Created on: {{ shopping_list.created_at }}</p>
 
-    <h2>Items</h2>
-    <ul>
-        {% for item in shopping_list.items.all %}
-            <li>{{ item.name }} 
-                {% if item.notes %}
-                  - {{ item.notes }}
-                {% endif %}
-        </li>
-        {% empty %}
-            <li>No items in this list.</li>
-        {% endfor %}
-    </ul>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in shopping_list.items.all %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.notes }}</td>
+                    <td>
+                        <form action="{% url 'delete_item' list_pk=shopping_list.pk item_pk=item.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">
+                        No items in this list.
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <details>
         <summary>Add Item</summary>
         <form method="post">
             {% csrf_token %}
-            {{ item_form.as_p }}
-            <button type="submit">Add Item</button>
+            {{ item_form|crispy }}
+            <button type="submit" class="btn btn-primary">Add Item</button>
+        </form>
+    </details>
+    <details>
+        <summary>Send List</summary>
+        <form method="post" action="{% url 'send_shopping_list' shopping_list.id %}">
+            {% csrf_token %}
+            {{ send_list_form|crispy }}
+            <button type="submit" class="btn btn-primary">Send List</button>
         </form>
     </details>
 {% endblock content %}
