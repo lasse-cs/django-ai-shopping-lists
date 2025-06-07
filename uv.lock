@@ -198,6 +198,33 @@ wheels = [
 ]
 
 [[package]]
+name = "django-stubs-ext"
+version = "5.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7c/7a/84338605817960942c1ea9d852685923ccccd0d91ba0d49532605973491f/django_stubs_ext-5.2.0.tar.gz", hash = "sha256:00c4ae307b538f5643af761a914c3f8e4e3f25f4e7c6d7098f1906c0d8f2aac9", size = 9618 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e2/65/9f5ca467d84a67c0c547f10b0ece9fd9c26c5efc818a01bf6a3d306c2a0c/django_stubs_ext-5.2.0-py3-none-any.whl", hash = "sha256:b27ae0aab970af4894ba4e9b3fcd3e03421dc8731516669659ee56122d148b23", size = 9066 },
+]
+
+[[package]]
+name = "django-tasks"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "django-stubs-ext" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/d2/09aa8cac81e5eb1719bed0fdfa865501e739a384830772a01954dc59e192/django_tasks-0.7.0.tar.gz", hash = "sha256:499f80d1a051566443cfa88a300d8b03435af7fc5708cad4d8da6d285614f739", size = 29581 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/e2/1079d177654bd3d4200040d031e9e42831fab532ac4ea8354db15b3280b5/django_tasks-0.7.0-py3-none-any.whl", hash = "sha256:8a8d64f2dc6e29ac2f45092d90e2dd82dc1dca100dfe3a4f2ce1209db99f3527", size = 39970 },
+]
+
+[[package]]
 name = "email-shopping"
 version = "0.1.0"
 source = { virtual = "." }
@@ -205,6 +232,7 @@ dependencies = [
     { name = "crispy-bootstrap5" },
     { name = "django" },
     { name = "django-crispy-forms" },
+    { name = "django-tasks" },
     { name = "langchain" },
     { name = "langchain-openai" },
 ]
@@ -214,6 +242,7 @@ requires-dist = [
     { name = "crispy-bootstrap5", specifier = ">=2025.4" },
     { name = "django", specifier = ">=5.2.2" },
     { name = "django-crispy-forms", specifier = ">=2.4" },
+    { name = "django-tasks", specifier = ">=0.7.0" },
     { name = "langchain", specifier = ">=0.3.25" },
     { name = "langchain-openai", specifier = ">=0.3.21" },
 ]

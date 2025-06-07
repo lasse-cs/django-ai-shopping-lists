@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Shopping List</h1>
+    <section class="my-4">
+        <h2>Start a new shopping list</h2>
+        <form method="post">
+            {{ shopping_form|crispy }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Create Shopping List</button>
+        </form>
+    </section>
+    {% if shopping_lists %}
+        <section>
+            <h2>My Shopping Lists</h2>
+            <table class="table table-striped table-bordered border-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for shopping_list in shopping_lists %}
+                    <tr>
+                        <td>{{ shopping_list.created_at|date:"Y-m-d" }}</td>
+                        <td>
+                            <a href="{{ shopping_list.get_absolute_url }}">{{ shopping_list.name }}</a>
+                        </td>
+                        <td>
+                            <form action="{% url 'delete_shopping_list' shopping_list.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% endif %}
+
+{% endblock content %}

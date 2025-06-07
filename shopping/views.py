@@ -1,15 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-from django.core.mail import send_mail
-from langchain_openai import OpenAI
 from shopping.forms import ShoppingItemForm, ShoppingListForm, SendShoppingListForm
 from shopping.models import ShoppingList
-from langchain.prompts import PromptTemplate
+from shopping.tasks import send_shopping_list_email
+
+
+def splash(request):
+    return render(request, "shopping/splash.html")
 
 
 @login_required
-def home(request):
+def lists(request):
     if request.method == "POST":
         shopping_form = ShoppingListForm(request.POST)
         if shopping_form.is_valid():
@@ -28,7 +30,7 @@ def home(request):
     }
     return render(
         request,
-        "shopping/home.html",
+        "shopping/shopping_list/index.html",
         context,
     )
 
@@ -68,26 +70,7 @@ def send_shopping_list(request, pk):
         message = f"Shopping List: {shopping_list.name}\n\n"
         for item in shopping_list.items.all():
             message += f"- {item.name}: {item.notes}\n"
-
-        prompt_template = PromptTemplate.from_template(
-            """
-            Tell a delightful short commentary about the items in this shopping list: {message}.\n
-            Do not include any personal information. Do not add any items that are not in the shopping list into the list.
-            Keep the response short, under 100 words.
-            """
-        )
-        prompt = prompt_template.invoke({"message": message})
-        model = OpenAI(model="gpt-4o-mini", temperature=0.8)
-        story = model.invoke(prompt)
-
-        message += f"\n\nStory: {story}\n\n"
-
-        send_mail(
-            subject,
-            message,
-            from_email="shopping@hipposaur.co.uk",
-            recipient_list=[email],
-        )
+        send_shopping_list_email.enqueue(message, email, subject)
     return redirect(shopping_list)
 
 
@@ -100,3 +83,32 @@ def delete_item(request, list_pk, item_pk):
         pk=item_pk,
     ).delete()
     return redirect(shopping_list)
+
+
+@login_required
+@require_POST
+def delete_shopping_list(request, pk):
+    shopping_list = get_object_or_404(ShoppingList, pk=pk, owner=request.user)
+    shopping_list.delete()
+    return redirect("lists")
+
+
+@login_required
+def edit_item(request, list_pk, item_pk):
+    shopping_list = get_object_or_404(ShoppingList, pk=list_pk, owner=request.user)
+    item = get_object_or_404(shopping_list.items, pk=item_pk)
+
+    if request.method == "POST":
+        form = ShoppingItemForm(request.POST, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect(shopping_list)
+    else:
+        form = ShoppingItemForm(instance=item)
+
+    context = {
+        "item": item,
+        "shopping_list": shopping_list,
+        "item_form": form,
+    }
+    return render(request, "shopping/shopping_list/item_edit.html", context)

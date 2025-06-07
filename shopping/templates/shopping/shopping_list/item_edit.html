@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ block.super }} | Edit Item
+{% endblock title %}    
+
+{% block content %}
+    <h1>Edit Item</h1>
+    <form method="post" class="mb-2">
+        {% csrf_token %}
+        {{ item_form|crispy }}
+        <button type="submit" class="btn btn-primary">Update Item</button>
+    </form>
+    <form method="post" action="{% url 'delete_item' list_pk=shopping_list.pk item_pk=item.pk %}" class="mb-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete Item</button>
+    </form>
+    <a href="{{ shopping_list.get_absolute_url }}" class="btn btn-secondary">Back to Shopping List</a>
+{% endblock content %}

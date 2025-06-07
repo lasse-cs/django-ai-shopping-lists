@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center">
+  <div class="text-center p-5 rounded shadow-lg bg-white" style="max-width: 500px;">
+    <div class="mb-4">
+      <span class="d-inline-flex justify-content-center align-items-center bg-primary text-white rounded-circle" style="width:96px; height:96px; font-size:3rem; font-weight:bold;">
+        🛒
+      </span>
+    </div>
+    <h1 class="display-4 mb-3 fw-bold text-primary">Shopping Lists</h1>
+    <p class="lead mb-4">The next generation, AI-powered shopping lists.<br>
+      Effortlessly manage, optimize, and share your shopping lists with smart AI summaries and delightful insights.
+    </p>
+    <a href="{% url 'lists' %}" class="btn btn-primary btn-lg w-100 mb-2">Start Now</a>
+  </div>
+</div>
+{% endblock %}

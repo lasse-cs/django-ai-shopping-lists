@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_tasks",
+    "django_tasks.backends.database",
     "crispy_forms",
     "crispy_bootstrap5",
     "accounts",
@@ -126,7 +128,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/lists/"
 LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -140,3 +142,6 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
+
+TASKS = {"default": {"BACKEND": "django_tasks.backends.database.DatabaseBackend"}}
