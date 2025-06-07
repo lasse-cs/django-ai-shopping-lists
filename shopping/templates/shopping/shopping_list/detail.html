@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ block.super }} | {{ shopping_list.name }}
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ shopping_list.name }}</h1>
+    <p>Created on: {{ shopping_list.created_at }}</p>
+
+    <h2>Items</h2>
+    <ul>
+        {% for item in shopping_list.items.all %}
+            <li>{{ item.name }} 
+                {% if item.notes %}
+                  - {{ item.notes }}
+                {% endif %}
+        </li>
+        {% empty %}
+            <li>No items in this list.</li>
+        {% endfor %}
+    </ul>
+
+    <details>
+        <summary>Add Item</summary>
+        <form method="post">
+            {% csrf_token %}
+            {{ item_form.as_p }}
+            <button type="submit">Add Item</button>
+        </form>
+    </details>
+{% endblock content %}
