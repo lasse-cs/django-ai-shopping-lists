@@ -26,6 +26,5 @@ def send_shopping_list_email(message, email, subject):
     send_mail(
         subject,
         message_with_story,
-        from_email="shopping@hipposaur.co.uk",
         recipient_list=[email],
     )
