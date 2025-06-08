@@ -18,4 +18,4 @@ ENV PORT=8080
 
 CMD uv run manage.py collectstatic --noinput && \
     uv run manage.py migrate && \
-    uv run gunicorn config.wsgi:application --bind :$PORT 
+    uv run gunicorn config.wsgi:application --bind 0.0.0.0:$PORT 
