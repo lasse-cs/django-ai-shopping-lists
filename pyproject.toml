@@ -11,4 +11,5 @@ dependencies = [
     "django-tasks>=0.7.0",
     "langchain>=0.3.25",
     "langchain-openai>=0.3.21",
+    "whitenoise>=6.9.0",
 ]
