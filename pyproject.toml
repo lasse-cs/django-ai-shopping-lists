@@ -16,3 +16,14 @@ dependencies = [
     "psycopg>=3.2.9",
     "whitenoise>=6.9.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+    "pytest-django>=4.11.1",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["tests/test_*.py", "tests.py"]
+pythonpath = "src"

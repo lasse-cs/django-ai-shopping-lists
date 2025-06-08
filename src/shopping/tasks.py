@@ -1,4 +1,5 @@
 from django_tasks import task
+from django.conf import settings
 from django.core.mail import send_mail
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
@@ -26,6 +27,6 @@ def send_shopping_list_email(message, email, subject):
     send_mail(
         subject,
         message_with_story,
-        from_email="lasse@hipposaur.co.uk",
+        from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[email],
     )
