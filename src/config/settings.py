@@ -30,7 +30,10 @@ if "DJANGO_DEBUG" in os.environ:
 else:
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
     DEBUG = False
-    ALLOWED_HOSTS = [os.environ["DJANGO_ALLOWED_HOSTS"]]
+    ALLOWED_HOSTS = [os.environ["HOST_URL"]]
+    CSRF_TRUSTED_ORIGINS = [
+        f"https://{os.environ['HOST_URL']}",
+    ]
 
 
 # Application definition
