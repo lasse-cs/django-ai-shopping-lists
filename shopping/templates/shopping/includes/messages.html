@@ -1,0 +1,12 @@
+{% load shopping_tags %}
+
+{% if messages %}
+    <section class="container">        
+        {% for message in messages %}
+            <div class="alert alert-{{ message|bootstrap_class_for_message }} alert-dismissible fade show my-2" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" aria-label="Close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    </section>
+{% endif %}

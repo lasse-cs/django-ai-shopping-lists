@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from shopping.forms import ShoppingItemForm, ShoppingListForm, SendShoppingListForm
@@ -44,6 +45,7 @@ def shopping_list_detail(request, pk):
             item = item_form.save(commit=False)
             item.shopping_list = shopping_list
             item.save()
+            messages.success(request, 'Added item "%s".' % item.name)
             return redirect(shopping_list)
     else:
         item_form = ShoppingItemForm()
@@ -71,6 +73,7 @@ def send_shopping_list(request, pk):
         for item in shopping_list.items.all():
             message += f"- {item.name}: {item.notes}\n"
         send_shopping_list_email.enqueue(message, email, subject)
+        messages.info(request, 'Sent shopping list to "%s".' % email)
     return redirect(shopping_list)
 
 
@@ -78,10 +81,12 @@ def send_shopping_list(request, pk):
 @require_POST
 def delete_item(request, list_pk, item_pk):
     shopping_list = get_object_or_404(ShoppingList, pk=list_pk, owner=request.user)
-    get_object_or_404(
+    item = get_object_or_404(
         shopping_list.items,
         pk=item_pk,
-    ).delete()
+    )
+    item.delete()
+    messages.success(request, 'Deleted item "%s".' % item.name)
     return redirect(shopping_list)
 
 
@@ -90,6 +95,7 @@ def delete_item(request, list_pk, item_pk):
 def delete_shopping_list(request, pk):
     shopping_list = get_object_or_404(ShoppingList, pk=pk, owner=request.user)
     shopping_list.delete()
+    messages.success(request, 'Deleted list "%s".' % shopping_list.name)
     return redirect("lists")
 
 

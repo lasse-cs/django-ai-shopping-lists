@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 
+
 prompt_template = PromptTemplate.from_template(
     """
     Tell a delightful short commentary about the items in this shopping list: {message}.\n

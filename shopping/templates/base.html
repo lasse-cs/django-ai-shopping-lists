@@ -8,22 +8,12 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body>
-    <nav class="navbar bg-primary">
-        <div class="container">
-            <a href="{% url 'splash' %}" class="navbar-brand text-light">🛒 Shopping Lists</a>
-            {% if request.user.is_authenticated %}
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-light">Logout</button>
-                </form>
-            {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
-            {% endif %}
-        </div>
-    </nav>
+    {% include 'shopping/includes/navbar.html' %}
+    {% include 'shopping/includes/messages.html' %}
     <main class="container">
         {% block content %}
         {% endblock content %}
     </main>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
